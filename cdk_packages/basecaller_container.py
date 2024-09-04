@@ -83,7 +83,7 @@ class BasecallerContainer(Construct):
                 version=datetime.datetime.now().strftime('%Y.%m%d.%H%M%S'),
                 dockerfile_template_data=open(os.path.join(dirname, 'assets', 'dockerfile_basecaller.yaml')).read(),
                 instance_configuration=imagebuilder.CfnContainerRecipe.InstanceConfigurationProperty(
-                    image='ami-0c95e55075f3c7f51',
+                    image='ami-052b2045207f966fd',
                     block_device_mappings=[imagebuilder.CfnContainerRecipe.InstanceBlockDeviceMappingProperty(
                         device_name="/dev/sda1",
                         ebs=imagebuilder.CfnContainerRecipe.EbsInstanceBlockDeviceSpecificationProperty(

@@ -30,9 +30,9 @@ environment_eu_west_1 = cdk.Environment(
     region='eu_west_1')
 
 # ensure we are in the right region
-if environment.region != 'us-west-2':
+if environment.region != 'ap-southeast-1':
     raise ValueError(
-        f'This CDK application needs to be deployed in the AWS region us-west-2. '
+        f'This CDK application needs to be deployed in the AWS region ap-southeast-1. '
         f'You are attempting a deployment into region {environment.region}.'
     )
 

@@ -88,7 +88,7 @@ def get_pricing_from_api(instance_types: list):
     """
     print('Requesting current pricing from AWS pricing API ...')
     # aws_batch_env = BasecallerBatch()
-    regions = ['us-west-2', 'us-east-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'me-south-1']
+    regions = ['ap-southeast-1', 'us-east-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'me-south-1']
     operating_system = 'Linux'
     prices = {
         'price_list_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),

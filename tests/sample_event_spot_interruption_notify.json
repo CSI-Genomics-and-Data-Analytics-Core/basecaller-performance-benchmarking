@@ -5,9 +5,9 @@
     "source": "aws.ec2",
     "account": "012345678912",
     "time": "2024-03-10T10:34:39Z",
-    "region": "us-west-2",
+    "region": "ap-southeast-1",
     "resources": [
-        "arn:aws:ec2:us-west-2c:instance/i-0229a16e3f489471b"
+        "arn:aws:ec2:ap-southeast-1c:instance/i-0229a16e3f489471b"
     ],
     "detail": {
         "instance-id": "i-0229a16e3f489471b",

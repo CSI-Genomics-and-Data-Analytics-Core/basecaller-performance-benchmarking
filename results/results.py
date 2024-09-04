@@ -155,12 +155,12 @@ def get_latest_run(df: pd.DataFrame):
 def generate_chart_performance_samples_per_sec(results: pd.DataFrame):
     instance_order = results[
         (results['runtime_type'] == 'per WHG 30x') &
-        (results['cost_region'] == 'us-west-2')
+        (results['cost_region'] == 'ap-southeast-1')
         ].sort_values(['samples_per_s'], ascending=False)['display_label'].unique()
     fig = px.bar(
         results[
             (results['runtime_type'] == 'per WHG 30x') &
-            (results['cost_region'] == 'us-west-2')
+            (results['cost_region'] == 'ap-southeast-1')
             ],
         title='<b>Basecaller performance, samples/s (the higher the better)</b>',
         x='samples_per_s', y='display_label', color='basecaller', barmode='group', facet_col='modified_bases',
@@ -197,12 +197,12 @@ def generate_chart_performance_samples_per_sec(results: pd.DataFrame):
 def generate_chart_runtime_whg_30x(results: pd.DataFrame):
     instance_order = results[
         (results['runtime_type'] == 'per WHG 30x') &
-        (results['cost_region'] == 'us-west-2')
+        (results['cost_region'] == 'ap-southeast-1')
         ].sort_values(['runtime_h'], ascending=True)['display_label'].unique()
     fig = px.bar(
         results[
             (results['runtime_type'] == 'per WHG 30x') &
-            (results['cost_region'] == 'us-west-2')
+            (results['cost_region'] == 'ap-southeast-1')
             ],
         title='<b>Basecaller performance, runtime [h] for whole human genome (WHG) at 30x coverage '
               '(the lower the better)</b>',

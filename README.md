@@ -80,7 +80,7 @@ This project deploys the following architecture (for a discussion please see the
 
 ## Preparing the AWS account for deployment
 
-All commands shown below are executed in a [Cloud9 environment](https://us-west-2.console.aws.amazon.com/cloud9control/home?region=us-west-2#/) 
+All commands shown below are executed in a [Cloud9 environment](https://ap-southeast-1.console.aws.amazon.com/cloud9control/home?region=ap-southeast-1#/) 
 with Ubuntu. Choose an m5.large instance type. It is required to expand the disk to 70 GB. The 
 code repository contains the script `resize.sh` to automate the disk resizing.
 
@@ -101,7 +101,7 @@ Filesystem      Size  Used Avail Use% Mounted on
 This project performs a fully automated deployment of the performance benchmarking environment. The project utilizes 
 the AWS Cloud Development Toolkit version 2 (CDK v2) for Python.
 
-This project has been tested in the us-west-2 (Oregon) region. All instructions below assume a deployment in us-west-2.
+This project has been tested in the ap-southeast-1 (Oregon) region. All instructions below assume a deployment in ap-southeast-1.
 
 The performance benchmarks are executed on various AWS EC2 instance types with GPUs. For running multiple instances in
 parallel, it is recommended to increase quotas for service "Amazon Elastic Compute Cloud (Amazon EC2)" to 
@@ -113,17 +113,17 @@ the following values:
 
 The deployment requires the NVIDIA CUDA base container from the public docker repository in your private ECR repository.
 This container is required for the build of the guppy and dorado container.
-Run the commands below to copy the container. Make sure you run the commands with AWS credentials for the us-west-2 
+Run the commands below to copy the container. Make sure you run the commands with AWS credentials for the ap-southeast-1 
 region.
 ```shell
 cuda_container="nvidia/cuda:12.3.2-runtime-ubuntu20.04"
-aws ecr create-repository --repository-name 'nvidia/cuda' --region us-west-2
+aws ecr create-repository --repository-name 'nvidia/cuda' --region ap-southeast-1
 docker login
 docker pull "$cuda_container"
 aws_account_id=$(aws sts get-caller-identity --query 'Account' --output text)
-docker tag "$cuda_container" "$aws_account_id.dkr.ecr.us-west-2.amazonaws.com/$cuda_container"
-aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin "$aws_account_id.dkr.ecr.us-west-2.amazonaws.com"
-docker push "$aws_account_id.dkr.ecr.us-west-2.amazonaws.com/$cuda_container"
+docker tag "$cuda_container" "$aws_account_id.dkr.ecr.ap-southeast-1.amazonaws.com/$cuda_container"
+aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin "$aws_account_id.dkr.ecr.ap-southeast-1.amazonaws.com"
+docker push "$aws_account_id.dkr.ecr.ap-southeast-1.amazonaws.com/$cuda_container"
 ```
 
 ## Deploying the project
@@ -191,7 +191,7 @@ PerfBench-Downloader: creating CloudFormation changeset...
 ```
 
 2. **Base AMI image and docker container builds:** The base AMI image and docker container builds complete around 25 minutes 
-after the CDK deployment has completed. To check the status, navigate to the [EC2 Image Builder console](https://us-west-2.console.aws.amazon.com/imagebuilder/home?region=us-west-2#/viewPipelines).
+after the CDK deployment has completed. To check the status, navigate to the [EC2 Image Builder console](https://ap-southeast-1.console.aws.amazon.com/imagebuilder/home?region=ap-southeast-1#/viewPipelines).
 Select the `ONT base AMI pipeline`. In the _Output images_ section you should see an image version with _Image status_ "Available":
 
 ![EC2 Image Builder base AMI check](doc/ec2_image_builder_base_ami_check.png)
@@ -209,7 +209,7 @@ data set as test data from an S3 bucket maintained by Oxford Nanopore. The data 
 After the download, the downloader instance will trigger the deletion of the downloader CDK stack. This is done to avoid 
 cost from an idle EC2 instance.
 
-To check progress on the download open the [CloudWatch Logs console](https://us-west-2.console.aws.amazon.com/cloudwatch/home?region=us-west-2#logsV2:log-groups/log-group/$252Faws$252FPerfBench$252Fdownloader) 
+To check progress on the download open the [CloudWatch Logs console](https://ap-southeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-1#logsV2:log-groups/log-group/$252Faws$252FPerfBench$252Fdownloader) 
 and check the `/aws/PerfBench/downloader` log group. The download is complete when you see the following lines at the 
 end of the log:
 
@@ -255,13 +255,13 @@ several hours. The following steps provide guidance for how to check jobs have b
 running.
 
 1. **check submitted jobs are visible in AWS Batch:** after starting the benchmark tests as described above, navigate to 
-the [AWS Batch console](https://us-west-2.console.aws.amazon.com/batch/home?region=us-west-2). Scroll down to job queue
+the [AWS Batch console](https://ap-southeast-1.console.aws.amazon.com/batch/home?region=ap-southeast-1). Scroll down to job queue
 "g5-48xlarge". Immediately after submitting the benchmark test jobs you will see the jobs with status "RUNNABLE".
 
 ![AWS Batch check job queue](doc/AWS_Batch_job_queue_RUNNABLE.png)
 
 2. **check EC2 instances are started:** once jobs have arrived, AWS Batch will automatically start the EC2 instances 
-required to run the benchmark tests. Navigate to the [EC2 Auto Scaling Groups console](https://us-west-2.console.aws.amazon.com/ec2/home?region=us-west-2#AutoScalingGroups:).
+required to run the benchmark tests. Navigate to the [EC2 Auto Scaling Groups console](https://ap-southeast-1.console.aws.amazon.com/ec2/home?region=ap-southeast-1#AutoScalingGroups:).
 Select the Auto Scaling group (ASG) that contains the job-queue name (e.g. \*g5-48xlarge\*). In column "Instances" you 
 should see that one or more instances have been launched.
 
@@ -270,12 +270,12 @@ should see that one or more instances have been launched.
 Please note, if you are submitting jobs for EC2 instance types that are in high demand, you may see the following
 message under the "Activity" tab of the ASG:
 
-*"Could not launch On-Demand Instances. InsufficientInstanceCapacity - We currently do not have sufficient p3dn.24xlarge capacity in the Availability Zone you requested (us-west-2c). Our system will be working on provisioning additional capacity."*
+*"Could not launch On-Demand Instances. InsufficientInstanceCapacity - We currently do not have sufficient p3dn.24xlarge capacity in the Availability Zone you requested (ap-southeast-1c). Our system will be working on provisioning additional capacity."*
 
 AWS Batch will automatically retry in the background to launch the required instance type and execute the job once 
 instances become available.
 
-3. **check AWS Batch job enters "RUNNING" state:** Navigate to the [AWS Batch jobs console](https://us-west-2.console.aws.amazon.com/batch/home?region=us-west-2#jobs)
+3. **check AWS Batch job enters "RUNNING" state:** Navigate to the [AWS Batch jobs console](https://ap-southeast-1.console.aws.amazon.com/batch/home?region=ap-southeast-1#jobs)
 and select the "g5-48xlarge" job queue. You will see "RUNNING" in the Status column. Please note, it takes around 10 - 13 
 minutes from submitting the jobs until AWS Batch shows the "RUNNING" state. During this time the Auto Scaling group 
 launches EC2 instances and the basecaller container image (several GB in size!) is downloaded from the Elastic Container 
@@ -284,7 +284,7 @@ Registry (ECR) and started.
 ![AWS Batch job in RUNNING state](doc/AWS_Batch_job_queue_RUNNING.png)
 
 4. **check job log outputs:** Once a job has entered the "RUNNING" state all commandline outputs from the basecallers are 
-redirected to CloudWatch Logs. To see the log output, select a running job in the [AWS Batch Jobs console](https://us-west-2.console.aws.amazon.com/batch/home?region=us-west-2#jobs).
+redirected to CloudWatch Logs. To see the log output, select a running job in the [AWS Batch Jobs console](https://ap-southeast-1.console.aws.amazon.com/batch/home?region=ap-southeast-1#jobs).
 In the "Job information" section select the log stream URL.
 
 ![AWS Batch job details log stream URL](doc/AWS_Batch_job_details_log_stream.png)
@@ -293,7 +293,7 @@ You will be redirected to the CloudWatch logs event console where you can inspec
 
 ![CloudWatch log job messages](doc/CloudWatch_log_details.png)
 
-5. **Check job has finished:** select a job in the [AWS Batch Jobs console](https://us-west-2.console.aws.amazon.com/batch/home?region=us-west-2#jobs).
+5. **Check job has finished:** select a job in the [AWS Batch Jobs console](https://ap-southeast-1.console.aws.amazon.com/batch/home?region=ap-southeast-1#jobs).
 The completion of a job is reported in the "Job information" section. Please note that it takes around 10 - 12 minutes 
 for a job to start and another 30 minutes to several hours (depending on instance type) to complete.
 

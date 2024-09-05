@@ -25,13 +25,13 @@ account_id = boto3.client('sts').get_caller_identity().get('Account')
 # compute environments. This file is generated dynamically during deployment
 # of the performance benchmark environment.
 SSM_PARAMETER_STORE_INSTANCE_TYPES = '/ONT-performance-benchmark/aws-batch-instance-types'
-BASECALLER_DORADO_0_3_0 = f'{account_id}.dkr.ecr.{aws_region_name}.amazonaws.com/basecaller_guppy_latest_dorado0.3.0:latest'
-BASECALLER_DORADO_0_5_3 = f'{account_id}.dkr.ecr.{aws_region_name}.amazonaws.com/basecaller_guppy_latest_dorado0.5.3:latest'
-BASECALLER_DOCKER_IMAGE = BASECALLER_DORADO_0_5_3
+BASECALLER_DORADO_0_6_3 = f'{account_id}.dkr.ecr.{aws_region_name}.amazonaws.com/basecaller_guppy_latest_dorado0.6.3:latest'
+BASECALLER_DORADO_0_7_3 = f'{account_id}.dkr.ecr.{aws_region_name}.amazonaws.com/basecaller_guppy_latest_dorado0.7.3:latest'
+BASECALLER_DOCKER_IMAGE = BASECALLER_DORADO_0_7_3
 
 CONTAINER_SHORT_NAME = {
-    BASECALLER_DORADO_0_3_0: 'guppy-dorado0-3-0',
-    BASECALLER_DORADO_0_5_3: 'guppy-dorado0-5-3',
+    BASECALLER_DORADO_0_6_3: 'guppy-dorado0-6-3',
+    BASECALLER_DORADO_0_7_3: 'guppy-dorado0-7-3',
 }
 
 CONTAINER_PROPERTIES_TEMPLATE = {

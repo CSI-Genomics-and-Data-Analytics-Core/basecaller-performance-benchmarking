@@ -52,14 +52,14 @@ class BasecallerContainer(Construct):
 
         basecaller_containers = [
             {
-                'id': 'guppy_latest_dorado_v0_5_3',
-                'repository_name': 'basecaller_guppy_latest_dorado0.5.3',
-                'dorado_url': 'https://cdn.oxfordnanoportal.com/software/analysis/dorado-0.5.3-linux-x64.tar.gz',
+                'id': 'guppy_latest_dorado_v0_7_3',
+                'repository_name': 'basecaller_guppy_latest_dorado0.7.3',
+                'dorado_url': 'https://cdn.oxfordnanoportal.com/software/analysis/dorado-0.7.3-linux-x64.tar.gz',
             },
             {
-                'id': 'guppy_latest_dorado_v0_3_0',
-                'repository_name': 'basecaller_guppy_latest_dorado0.3.0',
-                'dorado_url': 'https://cdn.oxfordnanoportal.com/software/analysis/dorado-0.3.0-linux-x64.tar.gz',
+                'id': 'guppy_latest_dorado_v0_6_3',
+                'repository_name': 'basecaller_guppy_latest_dorado0.6.3',
+                'dorado_url': 'https://cdn.oxfordnanoportal.com/software/analysis/dorado-0.6.3-linux-x64.tar.gz',
             },
         ]
 
@@ -70,7 +70,7 @@ class BasecallerContainer(Construct):
                 self, f'Repository {basecaller_container["id"]}',
                 repository_name=basecaller_container['repository_name'],
                 removal_policy=cdk.RemovalPolicy.DESTROY,
-                auto_delete_images=True,
+                auto_delete_images=False,
             )
 
             self.recipe_container = imagebuilder.CfnContainerRecipe(

@@ -13,8 +13,8 @@ ssm_client = boto3.client('ssm')
 aws_region_name = boto3.session.Session().region_name
 account_id = boto3.client('sts').get_caller_identity().get('Account')
 
-BASECALLER_DORADO_0_3_0 = f'{account_id}.dkr.ecr.{aws_region_name}.amazonaws.com/basecaller_guppy_latest_dorado0.3.0:latest'
-BASECALLER_DORADO_0_5_3 = f'{account_id}.dkr.ecr.{aws_region_name}.amazonaws.com/basecaller_guppy_latest_dorado0.5.3:latest'
+BASECALLER_DORADO_0_6_3 = f'{account_id}.dkr.ecr.{aws_region_name}.amazonaws.com/basecaller_guppy_latest_dorado0.6.3:latest'
+BASECALLER_DORADO_0_7_3 = f'{account_id}.dkr.ecr.{aws_region_name}.amazonaws.com/basecaller_guppy_latest_dorado0.7.3:latest'
 
 gupppy_no_modified_bases = \
     'guppy_basecaller ' \
